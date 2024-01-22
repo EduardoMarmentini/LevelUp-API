@@ -1,13 +1,10 @@
 "use strict";
 
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; // Seta o esquema da "table" do banco 
 
-exports.get = () => {
-    
-}
-
-const schema = new Schema({
+// Seta o esquema como se fosse um espelho do banco de dados da model de produtos 
+const schema = new Schema({ 
     title: {
         type : String,
         required : true,
@@ -39,5 +36,5 @@ const schema = new Schema({
         required : true
     }]
 });
-
-module.exports = mongoose.model("Product", schema);
+ 
+module.exports = mongoose.model("Product", schema); // Exporta para ser carregado no app
