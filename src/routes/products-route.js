@@ -7,9 +7,9 @@ const controller = require("../controllers/product-controller");
 // ------------------------------------------ Metodos GET -----------------------------------
 
 router.get("/", controller.get); // Chama o metodo get do controler de produtos
-router.get("/find/slug/:slug", controller.getBySlug); // Chama o metodo get do controler de produtos
+router.get("/slug/:slug", controller.getBySlug); // Chama o metodo get do controler de produtos
 router.get("/find/:id", controller.getById); // Chama o metodo get do controler de produtos
-router.get("/find/tags/:tags", controller.getByTag); // Chama o metodo get do controler de produtos
+router.get("/tags/:tags", controller.getByTag); // Chama o metodo get do controler de produtos
 
 // -------------------------------------------------------------------------------------------
 

@@ -2,14 +2,17 @@
 
 const mongoose = require("mongoose"); // Chama o banco 
 const Product = mongoose.model("Product"); // Seta o objeto do esquema do banco para ser manipulado 
+const ValidationContract = require("../validators/fluent-validator"); //Importa o validador de campos
+const repository = require("../respoitories/product-repository")
+const contract = new ValidationContract(); // Setamos o objeto do contrato de validação dos campos
 
 // ------------------------------------------ Metodos GET -----------------------------------
 
 // Metodo de lisatgem de todos os produtos cadastrados no banco 
 exports.get = (req, res, next) => {
-    Product
-        // Como se fosse um where, busca os produtos que estão ativos e exibe somente o title price e slug 
-        .find({active : true}, "title price slug ") .then(data => {
+    repository // Chamamos nosso repositorio que contem todos os metodos de busca no banco de dados
+        .get()
+        .then(data => {
             res.status(200).send(data);
         }).catch(error => {
             res.status(400).send(error);
@@ -60,6 +63,18 @@ exports.getByTag = (req, res, next) => {
 
 // Metodo de inserção de produtos
 exports.post = (req, res, next) => {
+    
+    // Chamamos seus metodos de validação para os campos vindos do body 
+    contract.hasMinLen(req.body.title, 3, "O titulo deve conter pelo menos 3 caracteres!")
+    contract.hasMinLen(req.body.slug, 3, "O slug deve conter pelo menos 3 caracteres!")
+    contract.hasMinLen(req.body.description, 3, "A descrição deve conter pelo menos 3 caracteres!")
+
+    // Se os dados forem invalidos ele retorna erro e encerra o metodo
+    if(!contract.isValid()){
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
+
     var product = new Product(req.body); // seta o objeto do esquema para ser inserido dentro do banco 
     product.save()
     .then(success => {
