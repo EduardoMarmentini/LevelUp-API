@@ -11,7 +11,9 @@ mongoose.connect("mongodb+srv://root:Master2208@nodestore.ayfnqxx.mongodb.net/no
 
 
 // Carrega as models
-const Product = require("./models/product.js")
+const Product  = require("./models/product.js")
+const Costumer = require("./models/costumer.js")
+const Order = require("./models/order.js")
 
 // Carrega rotas
 const indexRoute = require("./routes/index-route"); // Rota da pagina principal da api 
