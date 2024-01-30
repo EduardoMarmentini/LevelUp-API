@@ -9,53 +9,61 @@ const contract = new ValidationContract(); // Setamos o objeto do contrato de va
 // ------------------------------------------ Metodos GET -----------------------------------
 
 // Metodo de lisatgem de todos os produtos cadastrados no banco 
-exports.get = (req, res, next) => {
-    repository // Chamamos nosso repositorio que contem todos os metodos de busca no banco de dados
-        .get()
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(error => {
-            res.status(400).send(error);
+exports.get = async(req, res, next) => {
+    try {
+        var data = await repository.get();
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
         });
-}
+    };
+};
 
-// Metodo de lisatgem de produto por meio da abreviacao
-exports.getBySlug = (req, res, next) => {
-    repository
-        .getBySlug(req.params.slug)
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(error => {
-            res.status(400).send(error);
+// Metodo de listagem de produto por meio da abreviacao
+exports.getBySlug = async(req, res, next) => {
+    try {
+        var data = await repository.getBySlug(req.params.slug);
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
         });
-}
+    };
+};
 
 // Metodo de lisatgem de produto por meio do id do produto
-exports.getById = (req, res, next) => {
-    repository
-        .getById( req.params.id,)
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(error => {
-            res.status(400).send(error);
+exports.getById = async(req, res, next) => {
+    try {
+        var data = await repository.getById( req.params.id,);
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
         });
-}
+    };
+};
 
 // Metodo de lisatgem de produto por meio das tags 
-exports.getByTag = (req, res, next) => {
-    repository
-        .getByTag(req.params.tags)
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(error => {
-            res.status(400).send(error);
+exports.getByTag = async(req, res, next) => {
+    try {
+        var data = await repository.getByTag(req.params.tags);
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
         });
-}
+    };
+};
 
 // -------------------------------------------------------------------------------------------
 
 // Metodo de inserção de produtos
-exports.post = (req, res, next) => {
+exports.post = async(req, res, next) => {
     
     // Chamamos seus metodos de validação para os campos vindos do body 
     contract.hasMinLen(req.body.title, 3, "O titulo deve conter pelo menos 3 caracteres!")
@@ -66,45 +74,46 @@ exports.post = (req, res, next) => {
     if(!contract.isValid()){
         res.status(400).send(contract.errors()).end();
         return;
-    }
+    };
 
-   repository
-        .create(req.body)
-        .then(success => {
-            res.status(201).send({ message : "Produto cadastrado com sucesso!"});
-        }).catch(error => {
-            res.status(400).send({ message : "Erro ao cadastrar produto", data : error});
+    try {     
+        await repository
+        res.status(201).send({ message : "Produto cadastrado com sucesso!"});
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
         });
+    };
 };
 
-// Metodo para atualizar os dados do produto pelo id
-exports.put = (req, res, next) => {
-    repository
-        .updateProduct(req.params.id, req.body)
-        .then(success => {
-            res.status(201).send({
-                message : "Produto atualizado com sucesso!"
-            });
-        }).catch(error => {
-            res.status(400).send({
-                message : "Falha ao atualizar o produto",
-                error : error
-            });
+// Metodo para atualizar os dados do produto pelo id    
+exports.put = async(req, res, next) => {
+    try {
+        await repository.updateProduct(req.params.id, req.body)
+        res.status(201).send({
+            message : "Produto atualizado com sucesso!"
         });
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
+        });  
+    };
 };
 
 // Metodo para excluir o produto por id 
-exports.delete = (req, res, next) => {
-    repository
-        .deleteProduct(req.params.id)
-        .then(success => {
-            res.status(200).send({
-                message : "Produto removido com sucesso!"
-            });
-        }).catch( error => {
-            res.status(400).send({
-                message : "Falha ao remover produto!",
-                error : error
-            });
+exports.delete = async(req, res, next) => {
+    try {
+        await repository.deleteProduct(req.params.id)
+        res.status(200).send({
+            message : "Produto removido com sucesso!"
         });
+    } catch (error) {
+        res.status(500).send({
+            message : "Falha ao processar sua requiscão ",
+            error : error
+        });  
+    }
+    
 };
