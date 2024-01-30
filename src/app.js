@@ -9,15 +9,15 @@ const app =  express();
 // Conexao ao banco
 mongoose.connect("mongodb+srv://root:Master2208@nodestore.ayfnqxx.mongodb.net/nodestore?retryWrites=true&w=majority");
 
-
 // Carrega as models
 const Product  = require("./models/product.js")
-const Costumer = require("./models/costumer.js")
+const Costumer = require("./models/customer.js")
 const Order = require("./models/order.js")
 
 // Carrega rotas
 const indexRoute = require("./routes/index-route"); // Rota da pagina principal da api 
 const productRoute = require("./routes/products-route.js") // Rota para os metodos de manipulação de produto 
+const customerRoute = require("./routes/customer-route.js") // Rota para os metodos de manipulação de customer
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ 
@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use("/", indexRoute);
-app.use("/products", productRoute);""
+app.use("/products", productRoute);
+app.use("/customers", customerRoute);
 
 module.exports = app; 

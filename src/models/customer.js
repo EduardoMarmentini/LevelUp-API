@@ -19,4 +19,4 @@ const schema = new Schema({
     }
 });
  
-module.exports = mongoose.model("Costumer", schema); // Exporta para ser carregado no app
+module.exports = mongoose.model("Customer", schema); // Exporta para ser carregado no app

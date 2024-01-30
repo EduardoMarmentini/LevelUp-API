@@ -1,7 +1,5 @@
 'use strict';
 
-const mongoose = require("mongoose"); // Chama o banco 
-const Product = mongoose.model("Product"); // Seta o objeto do esquema do banco para ser manipulado 
 const ValidationContract = require("../validators/fluent-validator"); //Importa o validador de campos
 const repository = require("../respoitories/product-repository")
 const contract = new ValidationContract(); // Setamos o objeto do contrato de validação dos campos
@@ -77,7 +75,7 @@ exports.post = async(req, res, next) => {
     };
 
     try {     
-        await repository
+        await repository.create(req.body)
         res.status(201).send({ message : "Produto cadastrado com sucesso!"});
     } catch (error) {
         res.status(500).send({
