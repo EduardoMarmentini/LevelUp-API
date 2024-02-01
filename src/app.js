@@ -3,11 +3,12 @@
 const express =  require("express");
 const bodyParser = require("body-parser");  
 const  mongoose  =  require("mongoose");
+const config = require("./config.js")
 
 const app =  express();
 
 // Conexao ao banco
-mongoose.connect("mongodb+srv://root:Master2208@nodestore.ayfnqxx.mongodb.net/nodestore?retryWrites=true&w=majority");
+mongoose.connect(config.connectionString);
 
 // Carrega as models
 const Product  = require("./models/product.js")

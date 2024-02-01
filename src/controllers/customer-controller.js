@@ -3,7 +3,7 @@
 const ValidationContract = require("../validators/fluent-validator"); //Importa o validador de campos
 const repository = require("../respoitories/customer-repository") //Chama o repositorio com os metodos
 const contract = new ValidationContract(); // Setamos o objeto do contrato de validação dos campos
-
+const md5 = require("md5"); // Hash de cripitografia de senha
 
 // Metodo de lisatgem de todos os customers cadastrados no banco 
 exports.get = async(req, res, next) => {
@@ -33,7 +33,11 @@ exports.post = async(req, res, next) => {
     };
 
     try {     
-        await repository.create(req.body)
+        await repository.create({
+            name : req.body.name,
+            email : req.body.email,
+            password : md5(req.body.password + global.SALT_KEY)
+        })
         res.status(201).send({ message : "Cliente cadastrado com sucesso!"});
     } catch (error) {
         res.status(500).send({
