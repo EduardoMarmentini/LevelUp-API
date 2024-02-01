@@ -18,6 +18,7 @@ const Order = require("./models/order.js")
 const indexRoute = require("./routes/index-route"); // Rota da pagina principal da api 
 const productRoute = require("./routes/products-route.js") // Rota para os metodos de manipulação de produto 
 const customerRoute = require("./routes/customer-route.js") // Rota para os metodos de manipulação de customer
+const orderRoute = require("./routes/order-route.js") // Rota para os metodos de manipulação de order
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ 
@@ -27,5 +28,6 @@ app.use(bodyParser.urlencoded({
 app.use("/", indexRoute);
 app.use("/products", productRoute);
 app.use("/customers", customerRoute);
+app.use("/orders", orderRoute);
 
 module.exports = app; 
