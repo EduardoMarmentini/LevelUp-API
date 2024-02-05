@@ -4,6 +4,7 @@ const ValidationContract = require("../validators/fluent-validator"); //Importa 
 const repository = require("../respoitories/customer-repository") //Chama o repositorio com os metodos
 const contract = new ValidationContract(); // Setamos o objeto do contrato de validação dos campos
 const md5 = require("md5"); // Hash de cripitografia de senha
+const emailService = require("../services/email-services"); //Chama o service de envio de email
 
 // Metodo de lisatgem de todos os customers cadastrados no banco 
 exports.get = async(req, res, next) => {
@@ -38,6 +39,13 @@ exports.post = async(req, res, next) => {
             email : req.body.email,
             password : md5(req.body.password + global.SALT_KEY)
         })
+
+        emailService.send(
+            req.body.email, 
+            "Bem vindo ao Node Store",
+             global.EMAIL_TMPL.replace("{0}", req.body.name)
+        );
+
         res.status(201).send({ message : "Cliente cadastrado com sucesso!"});
     } catch (error) {
         res.status(500).send({
