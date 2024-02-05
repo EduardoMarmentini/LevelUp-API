@@ -61,8 +61,8 @@ global.EMAIL_TMPL = `
     </header>
 
     <main>
-        <h1>Olá {0}, bem-Vindo à Node Store!</h1>
-        <p>Obrigado por se juntar a nós. Estamos animados em tê-lo como parte da nossa comunidade.</p>
+        <h1>Olá {0}, Bem-Vindo(a) à Node Store!</h1>
+        <p>Obrigado por se juntar a nós. Estamos animados em tê-lo(a) como parte da nossa comunidade.</p>
         <p>Fique à vontade para explorar nossa loja e descobrir produtos incríveis.</p>
         <p>Se precisar de alguma ajuda ou tiver alguma dúvida, não hesite em entrar em contato conosco.</p>
         <p>Boas compras!</p>
