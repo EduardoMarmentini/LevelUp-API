@@ -21,10 +21,8 @@ const productRoute = require("./routes/products-route.js") // Rota para os metod
 const customerRoute = require("./routes/customer-route.js") // Rota para os metodos de manipulação de customer
 const orderRoute = require("./routes/order-route.js") // Rota para os metodos de manipulação de order
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ 
-    extended : false 
-}));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 app.use("/", indexRoute);
 app.use("/products", productRoute);

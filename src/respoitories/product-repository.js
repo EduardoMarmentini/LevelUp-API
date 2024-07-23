@@ -7,7 +7,7 @@ exports.get = async() =>{
     const res = await Product.find({
         // Aqui seria como uma condicional para os dados serem puxados, utilizando o mongoose para isso
         active : true 
-    }, "title price slug");
+    }, "title price slug photo");
     return res;
 }
 
@@ -44,6 +44,7 @@ exports.updateProduct = async(id, data) => {
         id,
         {
             $set : {
+                photo: data.photo,
                 title : data.title,
                 description : data.description,
                 slug : data.slug,

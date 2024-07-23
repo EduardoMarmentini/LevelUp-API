@@ -67,6 +67,7 @@ exports.post = async(req, res, next) => {
     contract.hasMinLen(req.body.title, 3, "O titulo deve conter pelo menos 3 caracteres!")
     contract.hasMinLen(req.body.slug, 3, "O slug deve conter pelo menos 3 caracteres!")
     contract.hasMinLen(req.body.description, 3, "A descrição deve conter pelo menos 3 caracteres!")
+    // contract.isBase64(req.body.photo, "A foto deve estar em formato base64!")
 
     // Se os dados forem invalidos ele retorna erro e encerra o metodo
     if(!contract.isValid()){
