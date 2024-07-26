@@ -5,6 +5,7 @@ const repository = require("../respoitories/customer-repository") //Chama o repo
 const contract = new ValidationContract(); // Setamos o objeto do contrato de validação dos campos
 const md5 = require("md5"); // Hash de cripitografia de senha
 const emailService = require("../services/email-services"); //Chama o service de envio de email
+const authService = require("../services/auth-service"); //Aqui chamo o service que ira gerar o token de autenticação do usuario.
 
 // Metodo de lisatgem de todos os customers cadastrados no banco 
 exports.get = async(req, res, next) => {
@@ -18,7 +19,6 @@ exports.get = async(req, res, next) => {
         });
     };
 };
-
 
 exports.post = async(req, res, next) => {
     
@@ -54,3 +54,4 @@ exports.post = async(req, res, next) => {
         });
     };
 };
+
