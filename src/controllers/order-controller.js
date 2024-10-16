@@ -1,6 +1,7 @@
 'use strict';
 
-const repository = require("../respoitories/order-repository") //Chama o repositorio com os metodos
+const repository = require("../respoitories/order-repository"); //Chama o repositorio com os metodos
+const authService = require("../services/auth-service");
 const guid = require("guid");
 
 // Metodo de lisatgem de todos os customers cadastrados no banco 
@@ -19,8 +20,12 @@ exports.get = async(req, res, next) => {
 
 exports.post = async(req, res, next) => {
     try {     
+        var token = req.body.token || req.query.token || req.headers['x-access-token'];
+        
+        var data = await authService.decodeToken(token)
+
         await repository.create({
-            customer: req.body.customer,
+            customer: data.id   ,
             number : guid.raw().substring(0, 6),
             items: req.body.items
         });
