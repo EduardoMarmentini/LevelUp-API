@@ -1,5 +1,6 @@
 "use strict";
 
+const { string, required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema; // Seta o esquema da "table" do banco 
 
@@ -16,7 +17,13 @@ const schema = new Schema({
     password: {
         type : String, 
         required : true
+    },
+    roles: {
+        type: string,
+        required : true,
+        enum : ["user", "admin"],
+        default: "user"
     }
 });
- 
+
 module.exports = mongoose.model("Customer", schema); // Exporta para ser carregado no app

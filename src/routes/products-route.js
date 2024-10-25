@@ -14,8 +14,8 @@ router.get("/tags/:tags", controller.getByTag); // Chama o metodo get do control
 
 // -------------------------------------------------------------------------------------------
 
-router.post("/", authService.authorize, controller.post); // Chama o metodo post do controller de produtos
-router.put("/:id", authService.authorize, controller.put); // Chama o metodo put do controller de produtos
-router.delete("/:id", authService.authorize, controller.delete); // Chama o metodo delete do controler de produttos
+router.post("/", authService.isAdmin, controller.post); // Chama o metodo post do controller de produtos
+router.put("/:id", authService.isAdmin, controller.put); // Chama o metodo put do controller de produtos
+router.delete("/:id", authService.isAdmin, controller.delete); // Chama o metodo delete do controler de produttos
 
 module.exports = router; // Exporta para o uso dentro do app

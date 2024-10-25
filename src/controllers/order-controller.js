@@ -32,7 +32,7 @@ exports.post = async(req, res, next) => {
         res.status(201).send({ message : "Pedido cadastrado com sucesso!"});
     } catch (error) {
         res.status(500).send({
-            message : "Falha ao processar sua requiscão ",
+            message : "Falha ao processar sua requiscãdo ",
             error : error
         });
     };
