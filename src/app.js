@@ -22,15 +22,8 @@ const customerRoute = require("./routes/customer-route.js") // Rota para os meto
 const orderRoute = require("./routes/order-route.js") // Rota para os metodos de manipulação de order
 const authenticateRoute = require("./routes/authenticate-route.js") // Rota para o metodo de autenticação da API
 
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-
-// Hbilita CORS
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token")
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-})
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
 app.use("/", indexRoute);   
 app.use("/products", productRoute);
