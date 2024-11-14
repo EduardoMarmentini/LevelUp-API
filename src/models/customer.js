@@ -1,6 +1,5 @@
 "use strict";
 
-const { string, required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema; // Seta o esquema da "table" do banco 
 
