@@ -1,6 +1,6 @@
 # APÌ Node Store
 
-![Descrição da Imagem](Screenshot_1.jpg)
+![Descrição da Imagem](Screenshot_1.png)
 
 
 ## Índice
