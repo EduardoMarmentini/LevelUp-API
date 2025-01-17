@@ -40,5 +40,4 @@ const schema = new Schema({
         required : true,
     }
 });
- 
 module.exports = mongoose.model("Product", schema); // Exporta para ser carregado no app

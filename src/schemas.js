@@ -14,28 +14,38 @@ const generateSchemas = () => {
         if (file.endsWith('.js')) {
             try {
                 const model = require(path.join(modelsPath, file));
-                
-                // Verifica se o objeto importado tem a propriedade modelName
-                if (model && model.modelName) {
-                    const modelName = model.modelName
-                    
+
+                // Verifica se o objeto importado é um modelo válido do Mongoose
+                if (model && model.modelName && model.schema) {
+                    const modelName = model.modelName;
+
                     schemas[modelName] = {
                         type: "object",
                         properties: {}
                     };
 
+                    // Itera pelas propriedades do schema
                     for (const key in model.schema.paths) {
                         const pathType = model.schema.paths[key];
-                        schemas[modelName].properties[key] = {
-                            type: pathType.instance.toLowerCase()
+
+                        // Ignora propriedades internas do Mongoose, como "_id" e "__v"
+                        if (key === "_id" || key === "__v") continue;
+
+                        const property = {
+                            type: convertMongooseTypeToSwaggerType(pathType.instance)
                         };
 
-                        if (pathType.isRequired) {
-                            schemas[modelName].properties[key].required = true;
+                        // Adiciona `required` se a propriedade for obrigatória
+                        if (pathType.options.required) {
+                            property.required = true;
                         }
+
+                        // Adiciona enum, se aplicável
                         if (pathType.enumValues && pathType.enumValues.length > 0) {
-                            schemas[modelName].properties[key].enum = pathType.enumValues;
+                            property.enum = pathType.enumValues;
                         }
+
+                        schemas[modelName].properties[key] = property;
                     }
                 } else {
                     console.error(`O arquivo ${file} não exporta um modelo Mongoose válido.`);
@@ -47,6 +57,26 @@ const generateSchemas = () => {
     });
 
     return schemas;
+};
+
+// Função para converter tipos do Mongoose em tipos do Swagger
+const convertMongooseTypeToSwaggerType = (mongooseType) => {
+    switch (mongooseType) {
+        case "String":
+            return "string";
+        case "Number":
+            return "number";
+        case "Date":
+            return "string"; // Swagger usa "string" para datas
+        case "Boolean":
+            return "boolean";
+        case "Array":
+            return "array"; // Arrays podem precisar de tratamento adicional
+        case "ObjectId":
+            return "string"; // Trata ObjectId como string no Swagger
+        default:
+            return "object";
+    }
 };
 
 module.exports = generateSchemas;
