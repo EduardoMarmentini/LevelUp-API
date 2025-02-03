@@ -57,7 +57,7 @@ global.EMAIL_TMPL = `
 </head>
 <body>
     <header>
-        <h1 class='title'>Node Store</h1>
+        <h1 class='title'>Level Up</h1>
     </header>
 
     <main>
