@@ -5,7 +5,7 @@ global.EMAIL_TMPL = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Node Store - Boas-Vindas</title>
+    <title>Level Up - Boas-Vindas</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -61,7 +61,7 @@ global.EMAIL_TMPL = `
     </header>
 
     <main>
-        <h1>Olá {0}, Bem-Vindo(a) à Node Store!</h1>
+        <h1>Olá {0}, Bem-Vindo(a) à Level Up!</h1>
         <p>Obrigado por se juntar a nós. Estamos animados em tê-lo(a) como parte da nossa comunidade.</p>
         <p>Fique à vontade para explorar nossa loja e descobrir produtos incríveis.</p>
         <p>Se precisar de alguma ajuda ou tiver alguma dúvida, não hesite em entrar em contato conosco.</p>
@@ -69,7 +69,7 @@ global.EMAIL_TMPL = `
     </main>
 
     <footer>
-        <p>&copy; 2024 Node Store. Todos os direitos reservados.</p>
+        <p>&copy; 2024 Level Up. Todos os direitos reservados.</p>
     </footer>
 </body>
 </html>
