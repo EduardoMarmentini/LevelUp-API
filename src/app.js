@@ -30,7 +30,7 @@ const authenticateRoute = require("./routes/authenticate-route.js"); // Rota par
 const swaggerDefinition = {
     openapi: '3.0.0',
     info: {
-        title: "Documentação API-NODE-STORE",
+        title: "Documentação API-LevelUp",
         version: "1.0.0",
         description: "Documentação da API criada em Node.js para controle e venda de produtos eletrônicos de uma loja"
     },
