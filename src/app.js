@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const config = require("./config.js");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const generateSchemas = require('./schemas.js'); // Importando a função para gerar os schemas
+const generateSchemas = require('./schemas.js');
 const path = require('path');
 
 const app = express();
@@ -20,13 +20,11 @@ const Customer = require("./models/customer.js");
 const Order = require("./models/order.js");
 
 // Carrega rotas
-const indexRoute = require("./routes/index-route"); // Rota da página principal da API 
-const productRoute = require("./routes/products-route.js"); // Rota para os métodos de manipulação de produto 
-const customerRoute = require("./routes/customer-route.js"); // Rota para os métodos de manipulação de customer
-const orderRoute = require("./routes/order-route.js"); // Rota para os métodos de manipulação de order
-const authenticateRoute = require("./routes/authenticate-route.js"); // Rota para o método de autenticação da API
-
-app.use('/api-docs', express.static(path.join(__dirname, 'node_modules/swagger-ui-dist')));
+const indexRoute = require("./routes/index-route");
+const productRoute = require("./routes/products-route.js");
+const customerRoute = require("./routes/customer-route.js");
+const orderRoute = require("./routes/order-route.js");
+const authenticateRoute = require("./routes/authenticate-route.js");
 
 // Configuração do Swagger
 const swaggerDefinition = {
@@ -36,44 +34,48 @@ const swaggerDefinition = {
         version: "1.0.0",
         description: "Documentação da API criada em Node.js para controle e venda de produtos eletrônicos de uma loja"
     },
+    servers: [
+        {
+            url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
+            description: 'API Server'
+        }
+    ],
     components: {
         securitySchemes: {
-            xAccessToken: {  // Alterado para xAccessToken
+            xAccessToken: {
                 type: "apiKey",
                 in: "header",
-                name: "x-access-token", // Este é o nome do cabeçalho que você vai usar
+                name: "x-access-token",
                 description: "Insira seu token JWT no cabeçalho 'x-access-token'."
             }
         },
-        schemas: generateSchemas() // Gera os schemas a partir das models
+        schemas: generateSchemas()
     },
     security: [
         {
-            xAccessToken: [] // Aplicar a segurança globalmente
+            xAccessToken: []
         }
     ]
 };
 
 const options = {
     swaggerDefinition,
-    apis: [path.join(__dirname, './routes/*.js')], // Caminho completo para as rotas
+    apis: [path.join(__dirname, './routes/*.js')],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
-// Middleware para servir a documentação do Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+// Configuração do Swagger UI
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerSpec, {
     explorer: true,
-    customCssUrl: '/api-docs/swagger-ui.css',
-    customJs: [
-        '/api-docs/swagger-ui-bundle.js',
-        '/api-docs/swagger-ui-standalone-preset.js'
-    ]
+    customSiteTitle: "API LevelUp - Documentação"
 }));
 
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
+// Rotas da API
 app.use("/", indexRoute);
 app.use("/products", productRoute);
 app.use("/customers", customerRoute);
