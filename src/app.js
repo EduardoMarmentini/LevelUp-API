@@ -26,6 +26,8 @@ const customerRoute = require("./routes/customer-route.js"); // Rota para os mé
 const orderRoute = require("./routes/order-route.js"); // Rota para os métodos de manipulação de order
 const authenticateRoute = require("./routes/authenticate-route.js"); // Rota para o método de autenticação da API
 
+app.use('/api-docs', express.static(path.join(__dirname, 'node_modules/swagger-ui-dist')));
+
 // Configuração do Swagger
 const swaggerDefinition = {
     openapi: '3.0.0',
@@ -60,7 +62,14 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 // Middleware para servir a documentação do Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customCssUrl: '/api-docs/swagger-ui.css',
+    customJs: [
+        '/api-docs/swagger-ui-bundle.js',
+        '/api-docs/swagger-ui-standalone-preset.js'
+    ]
+}));
 
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
