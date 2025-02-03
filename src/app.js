@@ -65,12 +65,30 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
-// Configuração do Swagger UI
+// Configuração de CORS e headers
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
+
+// Configuração do Swagger UI com opções específicas
 app.use('/api-docs', swaggerUi.serve);
 app.get('/api-docs', swaggerUi.setup(swaggerSpec, {
     explorer: true,
-    customSiteTitle: "API LevelUp - Documentação"
+    customSiteTitle: "API LevelUp - Documentação",
+    swaggerOptions: {
+        url: '/api-docs/swagger.json',
+        persistAuthorization: true
+    }
 }));
+
+// Rota para servir o arquivo swagger.json
+app.get('/api-docs/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
 
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
