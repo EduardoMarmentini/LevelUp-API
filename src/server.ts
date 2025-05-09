@@ -1,6 +1,16 @@
 import app from './app';
+import { connectDatabase, disconnectDatabase } from './database/connection';
 import { PORT } from './config';
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+connectDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log("-".repeat(50));
+  });
+});
+
+// Trata desligamento gracioso
+process.on('SIGINT', async () => {
+  await disconnectDatabase();
+  process.exit(0);
 });

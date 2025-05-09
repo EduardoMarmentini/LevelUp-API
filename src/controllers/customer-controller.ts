@@ -1,30 +1,53 @@
 import { Request, Response } from 'express';
-import  Services  from '../services/customer-service';
+import Service from '../services/customer-service';
 
 class CustomerController {
-    public static async get(req: Request, res: Response): Promise<void> {
+    async getAllCustomers(req: Request, res: Response) {
         try {
-            const customers = await Services.findAll();
+            const { page = 1, limit = 10, ...filters } = req.query;
 
-            if (!customers) {
-                res.status(404).json({ error: "Clientes não encontrados" });
-                return;
-            }
+            const customers = await Service.findAll(filters, {
+                skip: (Number(page) - 1) * Number(limit),
+                limit: Number(limit)
+            });
 
-            res.status(200).json(customers);;
-
+            res.json(customers);
         } catch (error) {
-            res.status(500).json({ error: "Erro interno" });
+            if (error instanceof Error) {
+                res.status(500).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: 'Erro desconhecido' });
+            }
         }
     }
 
-    public static async post(req: Request, res: Response): Promise<void> {
+    async getCustomerById(req: Request, res: Response) {
         try {
-            res.status(201).json({ message: "Cliente criado" });
+            const customer = await Service.findById(req.params.id);
+            customer
+                ? res.json(customer)
+                : res.status(404).json({ error: 'Cliente não encontrado' });
         } catch (error) {
-            res.status(500).json({ error: "Erro interno" });
+            if (error instanceof Error) {
+                res.status(500).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: 'Erro desconhecido' });
+            }
+        }
+    }
+
+    async createCustomer(req: Request, res: Response) {
+        try {
+            const newCustomer = await Service.create(req.body);
+            res.status(201).json(newCustomer);
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(400).json({ error: error.message });
+            } else {
+                res.status(400).json({ error: 'Erro desconhecido' });
+            }
         }
     }
 }
 
-export default CustomerController;
+export default new CustomerController();
