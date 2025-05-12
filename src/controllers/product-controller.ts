@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import  Services  from '../services/product-service';
 
 class ProductController {
-    public static async get(req: Request, res: Response): Promise<void> {
+    public static async getAllProducts(req: Request, res: Response): Promise<void> {
         try {
             const products = await Services.findAll();
 

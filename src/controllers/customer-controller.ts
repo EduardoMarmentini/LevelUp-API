@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
 import Service from '../services/customer-service';
 
 class CustomerController {
@@ -10,7 +10,11 @@ class CustomerController {
                 skip: (Number(page) - 1) * Number(limit),
                 limit: Number(limit)
             });
-
+            if (!customers) {
+                res.status(404).json({ error: 'Clientes não encontrados' });
+                return;
+            }
+            
             res.json(customers);
         } catch (error) {
             if (error instanceof Error) {
