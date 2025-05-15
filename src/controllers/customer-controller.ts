@@ -77,6 +77,55 @@ class CustomerController {
             res.status(400).json({ error: error instanceof Error ? error.message : 'Erro desconhecido' });
         }
     }
+
+    async updateCustomer(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const { password, ...rest } = req.body;
+
+            // Chama classe de validação
+            const contract = new ValidationContract();
+            // Verifica se os campos obrigatórios estão preenchidos
+            contract.isRequired(id, 'O id é obrigatório');
+            contract.isRequired(rest.name, 'O nome é obrigatório');
+            contract.isRequired(rest.email, 'O email é obrigatório');
+            // Verifica se os campos têm o tamanho mínimo
+            contract.isEmail(rest.email, 'O email não é válido');
+
+            if (!contract.isValid()) {
+                res.status(400).json({ errors: contract.getErrors() });
+                return;
+            }
+
+            const updatedCustomer = await Service.update(id, rest);
+
+            if (!updatedCustomer) {
+                res.status(404).json({ error: 'Cliente não encontrado' });
+                return;
+            }
+
+            res.json({message: 'Cliente atualizado com sucesso', customer: updatedCustomer});
+        } catch (error) {
+            res.status(400).json({ error: error instanceof Error ? error.message : 'Erro desconhecido' });
+        }
+    }
+
+    async deleteCustomer(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+
+            const deletedCustomer = await Service.delete(id);
+
+            if (!deletedCustomer) {
+                res.status(404).json({ error: 'Cliente não encontrado' });
+                return;
+            }
+
+            res.json({message: 'Cliente deletado com sucesso'});
+        } catch (error) {
+            res.status(400).json({ error: error instanceof Error ? error.message : 'Erro desconhecido' });
+        }
+    }
 }
 
 export default new CustomerController();

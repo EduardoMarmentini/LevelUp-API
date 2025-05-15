@@ -2,9 +2,7 @@ import { Customer, ICustomer } from "../models/customer-model";
 import { FilterQuery, QueryOptions } from 'mongoose';
 
 class CustomerService {
-    /**
-     * Busca todos os clientes (sem senha)
-     */
+
     async findAll(
         query: FilterQuery<ICustomer> = {},
         options: QueryOptions = {}
@@ -19,9 +17,6 @@ class CustomerService {
         }
     }
 
-    /**
-     * Busca cliente por ID (sem senha)
-     */
     async findById(id: string): Promise<Omit<ICustomer, 'password'> | null> {
         try {
             return await Customer.findById(id)
@@ -33,9 +28,6 @@ class CustomerService {
         }
     }
 
-    /**
-     * Busca cliente por email (COM senha para autenticação)
-     */
     async findByEmail(email: string): Promise<ICustomer | null> {
         try {
             return await Customer.findOne({ email })
@@ -47,9 +39,6 @@ class CustomerService {
         }
     }
 
-    /**
-     * Cria um novo cliente
-     */
     async create(customerData: ICustomer): Promise<void> {
         try {
           await Customer.create(customerData);
@@ -59,9 +48,6 @@ class CustomerService {
         }
     }
 
-    /**
-     * Atualiza um cliente existente
-     */
     async update(
         id: string,
         updateData: Partial<Omit<ICustomer, '_id'>>,
@@ -77,9 +63,6 @@ class CustomerService {
         }
     }
 
-    /**
-     * Remove um cliente
-     */
     async delete(id: string): Promise<boolean> {
         try {
             const result = await Customer.findByIdAndDelete(id);

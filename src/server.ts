@@ -1,12 +1,12 @@
 import app from './app';
 import { connectDatabase, disconnectDatabase } from './database/connection';
-import { PORT } from './config';
+import { PORT, API_PREFIX } from './config';
 
 connectDatabase().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
     console.log("-".repeat(50));
-    console.log(`🌐 Rodando localmente http://localhost:${PORT}`);
+    console.log(`🌐 Rodando localmente http://localhost:${PORT}${API_PREFIX}`);
     console.log("-".repeat(50));
   });
 });
