@@ -1,7 +1,6 @@
 import { Product, IProduct} from "../models/product-model";
 import { FilterQuery, QueryOptions } from 'mongoose';
 
-// Exemplo básico de service
 class ProductService {
     async findAll(
         query: FilterQuery<IProduct> = {},
@@ -16,7 +15,17 @@ class ProductService {
             throw new Error('Falha ao buscar produtos');
         }
     }
-  
+
+    async create(product : IProduct): Promise<IProduct> {
+        try {
+            const newProduct = new Product(product);
+            return await newProduct.save();
+        } catch (error) {
+            console.error('Erro ao criar produto:', error);
+            throw new Error('Falha ao criar produto');
+        }
+    }
+
   }
   
   export default new ProductService();

@@ -4,6 +4,8 @@ export interface ICustomer extends Document {
     name: string;
     email: string;
     password: string;
+    salt: string;
+    roles: string[];
 }
 
 const customerSchema = new Schema<ICustomer>({
@@ -23,14 +25,24 @@ const customerSchema = new Schema<ICustomer>({
     type: String, 
     required: true,
     select: false 
+  },
+  salt: { 
+    type: String, 
+    required: true,
+    select: false 
+  },
+  roles: { 
+    type: [String], 
+    default: ['user'] 
   }
 });
 
-// Remove o _id do retorno se desejar
+
 customerSchema.set('toJSON', {
   transform: function(doc, ret) {
     delete ret._id;
     delete ret.password;
+    delete ret.salt;
     return ret;
   }
 });
