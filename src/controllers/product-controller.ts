@@ -30,6 +30,38 @@ class ProductController {
         }
     }
 
+    public static async getProductByTitle(req: Request, res: Response): Promise<void> {
+        try {
+            const title = req.params.title;
+            const product = await Services.findByTitle(title);
+            if (!product) {
+                res.status(404).json({ error: "Produto não encontrado" });
+                return;
+            }
+            res.status(200).json(product);
+        } catch (error) {
+            res.status(500).json({ error: "Erro interno" });
+        }
+    }
+
+    public static async getProductByTags(req: Request, res: Response): Promise<void> {
+        try {
+            const tags: string[] = req.body.tags;
+            if (!Array.isArray(tags) || tags.length === 0) {
+                res.status(400).json({ error: "Tags devem ser fornecidas como uma lista no corpo da requisição" });
+                return;
+            }
+            const products = await Services.findByTags(tags);
+            if (!products || products.length === 0) {
+                res.status(404).json({ error: "Produtos não encontrados" });
+                return;
+            }
+            res.status(200).json(products);
+        } catch (error) {
+            res.status(500).json({ error: "Erro interno" });
+        }
+    }
+
     public static async createProduct(req: Request, res: Response): Promise<void> {
         try {
             const productData = req.body;

@@ -17,8 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get(`${API_PREFIX}/`, (req: Request, res: Response) => {
   res.send('LevelUp API - Hello World!');
 });
-app.use('/customers', customerRoutes);
-app.use('/product', productRoutes);
-app.use('/orders', orderRoutes);
+
+app.use(`${API_PREFIX}/customer`, customerRoutes);
+app.use(`${API_PREFIX}/product`, productRoutes);
+app.use(`${API_PREFIX}/order`, orderRoutes);
 
 export default app;
