@@ -1,4 +1,5 @@
 import { Order, IOrder } from "../models/order-model";
+import { ConfirmationPurchase, NotificationStatusOrder } from "../utils/mail/notification-utils";
 
 class OrderService {
 
@@ -59,7 +60,13 @@ class OrderService {
     async create(order: IOrder): Promise<IOrder> {
         try {
             const newOrder = new Order(order);
-            return await newOrder.save();
+            await newOrder.save();
+            
+            const mail = new ConfirmationPurchase();
+            mail.getMailOptions(order.id, order.id.toString());
+            await mail.send();
+
+            return newOrder;
         }
         catch (error) {
             console.error('Erro ao criar pedido:', error);
@@ -70,7 +77,7 @@ class OrderService {
     async updateStatus(id: string , codStatus : number): Promise<IOrder | null> {
         try {
 
-            let status: string;
+            let status: string;  
             
             switch (codStatus) {
             case 1:
@@ -98,8 +105,13 @@ class OrderService {
             .lean();
 
             if (!order) {
-            throw new Error('Pedido não encontrado');
+                throw new Error('Pedido não encontrado');
             }
+
+            const mail = new NotificationStatusOrder();
+            mail.getMailOptions(order.id, order._id.toString(), status);
+            await mail.send();
+            
             return order;
         }
         catch (error) {

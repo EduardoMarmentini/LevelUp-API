@@ -46,7 +46,6 @@ class CustomerController {
     async createCustomer(req: Request, res: Response) {
         try {
             const { password, email, name, ...rest } = req.body;
-
             // Chama classe de validação
             const contract = new ValidationContract();
             // Verifica se os campos obrigatórios estão preenchidos

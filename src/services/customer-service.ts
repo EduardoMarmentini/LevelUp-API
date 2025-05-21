@@ -1,5 +1,6 @@
 import { Customer, ICustomer } from "../models/customer-model";
 import { FilterQuery, QueryOptions } from 'mongoose';
+import { NewCustomerEmail } from '../utils/mail/notification-utils';
 
 class CustomerService {
 
@@ -42,6 +43,17 @@ class CustomerService {
     async create(customerData: ICustomer): Promise<void> {
         try {
           await Customer.create(customerData);
+
+          try {
+            const mail = new NewCustomerEmail();
+            mail.getMailOptions(customerData.email, customerData.name);
+            await mail.send();
+
+          } catch (error) {
+            console.error('Erro ao enviar email de boas-vindas:', error);
+            throw new Error('Falha ao enviar email de boas-vindas');
+        }
+
         } catch (error) {
             console.error('Erro ao criar cliente:', error);
             throw new Error('Falha ao criar cliente');

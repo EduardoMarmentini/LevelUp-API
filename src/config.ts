@@ -24,6 +24,12 @@ const config = {
     secret: process.env.JWT_SECRET || 'segredo-desenvolvimento',
     expiresIn: '24h',
   },
+ 
+  // Configurações de e-mail
+  mail: {
+    user: process.env.MAIL_USER || 'usuario@exemplo.com',
+    pass: process.env.MAIL_PASS || 'senha',
+  },
 
   // Outras configurações
   api: {
@@ -37,5 +43,9 @@ export const NODE_ENV: string = config.server.env;
 export const DB_URL: string = config.database.url;
 export const JWT_SECRET: string = config.auth.secret;
 export const API_PREFIX: string = config.api.prefix;
+
+// Exportações das configurações de e-mail
+export const MAIL_USER: string = config.mail.user;
+export const MAIL_PASS: string = config.mail.pass;
 
 export default config;
